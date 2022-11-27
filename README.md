@@ -20,6 +20,11 @@ npx cypress run
 npx cypress run --browser=chrome
 ```
 
+To run Cypress IDE use
+```sh
+npx cypress open
+```
+
 ## Observe test run results in CI
 [![N|BuildStatus](https://iili.io/QOkZWQ.png)](https://freeimage.host/i/QOkZWQ)
 
