@@ -8,8 +8,10 @@ class IssueModal {
         this.assignee = '[data-testid="select:userIds"]';
         this.backlogList = '[data-testid="board-list:backlog"]';
         this.issuesList = '[data-testid="list-issue"]';
-    }
+        this.issueTypeStory = '[data-testid="select-option:Story"]'
 
+    }
+        // function
     getIssueModal() {
         return cy.get(this.issueModal);
     }
@@ -61,3 +63,4 @@ class IssueModal {
 }
 
 export default new IssueModal();
+// let issue = new IssueModal (); (it is the same than previous row)
