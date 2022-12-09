@@ -14,7 +14,9 @@ describe('Issue filtering', () => {
     cy.visit('/');
   });
 
-  it('Should filter issues by title', () => {
+const getSearchInput = () => cy.get('[data-testid="board-filters"]').find('input');
+
+  it.only('Should filter issues by title', () => {
     getSearchInput().debounced('type', 'multiple assignee');
     cy.get('[data-testid="list-issue"]').should('have.length', '1');
   });
@@ -26,7 +28,7 @@ describe('Issue filtering', () => {
    * 3. Filter by "Recently Updated" button
    */
 
-  const getSearchInput = () => cy.get('[data-testid="board-filters"]').find('input');
+  
 });
 
   // In the file issue-filtering-5.cy.js we are locating issues based on only one search 
@@ -59,10 +61,11 @@ describe('Issue filtering', () => {
 
       // workshop #17 task #2 
       // Try to create the same solution as in task 1, but usin forEach function
-  it.only(`Should filter issues by title: `, () => {
+  it(`Should filter issues by title: `, () => {
     issuesToValidate.forEach(issue => {
       getSearchInput().clear().debounced('type', issue.issueName);
       cy.get('[data-testid="list-issue"]')
         .should('have.length', issue.expectedAmountOfIssues);
     });
+    
    });
