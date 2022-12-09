@@ -34,4 +34,22 @@
  *
  * Expected result:
  * 1. You will have a test that validates, that issue title on the board does not have extra spaces in it
+ 
+ * Task #4
+ * Add new test to test file  issue-detail-edit-3.cy.js.
+ * 1. Predefine empty array variable. Decide, which definition is needed: const or let?
+ * 2. Push into the array first element from initially selected priority value.
+ * 3. Access the list of all priority options (you have to open the list before by clicking on the priority field)
+ * 4. Loop through the elements: each time invoke text value from the current field and save it into an Array. 
+ * 5. Print out added value and length of the array during each iteration, using cy.log(…) command.
+  
+ * As a result Array will have 5 elements:
+ * [“High“, “Lowest“, “Low“, “Medium”, “Highest”]
+   
+ * Bonus task: validate on the last cycle iteration, that saved array has length as predefined constant number.
+
+ * workshop #17 tasks #1 & #2 done at page „issue-filtering-5.cy“
+ * workshop #17 tasks #3 & #4 done at page „issue-details-edit-3.cy“
+
  */
+

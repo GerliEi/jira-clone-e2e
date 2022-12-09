@@ -42,6 +42,7 @@
  
    const issueUnderTestTitle = "This is an issue of type: Task.";
  
+    // test data
    const issueForUpdate = {
      type: "Story",
      status: "Done",
@@ -97,6 +98,7 @@
      });
    }
  
+      // here is not used within, because click on delete button directs to another object
    it('Should delete an issue successfully', () => {
      IssueDetailPage.getIssueDetailModal();
      IssueDetailPage.deleteIssue();

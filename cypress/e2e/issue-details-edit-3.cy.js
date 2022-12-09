@@ -11,6 +11,8 @@
  *    Bonus: used random data generator library (faker.js)
  */
 
+import IssueDetailPage from "../pages/IssueModal_WS #15,16";
+
 /**
  * Workshop #16
  * Task #1
@@ -67,7 +69,44 @@ describe('Issue details editing', () => {
       cy.get('[data-testid="select-option:Medium"]').click();
       cy.get('[data-testid="select:priority"]').should('have.text', 'Medium');
     });
-  });
+        // Workshop #16 task #1 (lühemalt sama test, mis eelnevatel ridadel)
+        // const. with "contains"
+    const dataForVerificationWithContains = [
+      ['[data-testid="select:type"]','Story'],
+      ['[data-testid="select:assignees"]', 'Baby Yoda'],
+      ['[data-testid="select:assignees"]', 'Lord Gaben']
+    ]
+        // const. with "have.text"
+    const dataForVerificationByText = [
+      ['[data-testid="select:status"]','Done'],
+      ['[data-testid="select:reporter"]', 'Pickle Rick'],
+      ['[data-testid="select:priority"]', 'Medium']
+    ]
+        // asserting values with "contains" (vt täpsemalt ülevalpool)
+    for (const [property, value] of dataForVerificationWithContains) {
+      cy.get(property).should('contain', value)
+    }
+      // asserting values with "have.text"
+    for (const [property, value] of dataForVerificationByText) {
+      cy.get(property).should('have.text', value)
+    }
+      // const. with "contains" & "have text"
+    const dataForVerificationTask2 = [
+      ['[data-testid="select:type"]', 'Story'],
+      ['[data-testid="select:assignees"]', 'Baby Yoda'],
+      ['[data-testid="select:assignees"]', 'Lord Gaben'],
+      ['[data-testid="select:status"]', 'Done'],
+      ['[data-testid="select:reporter"]', 'Pickle Rick'],
+      ['[data-testid="select:priority"]', 'Medium']
+    ]
+      // workshop #16 task #2 - adding if condition and 
+      //combining two assertions into one cycle (=== (operands and their type aarem equal), || (OR))
+    for (const [property, value] of dataForVerificationTask2) {
+      if (property === '[data-testid="select:type"]' || property === '[data-testid="select:assignees"]')
+        cy.get(property).should('contain', value);
+      else cy.get(property).should('have.text', value);
+    }
+  }); 
 
   it('Should update title, description successfully', () => {
     const title = 'TEST_TITLE';
@@ -110,4 +149,72 @@ describe('Issue details editing', () => {
   });
 
   const getIssueDetailsModal = () => cy.get('[data-testid="modal:issue-details"]');
+
+      // task #3, workshop #17 Regex
+      // Regex to be used: /^[A-Za-z ]*$/ - letter and space symbol 
+  it('Reporter test with regEx', () => {
+    getIssueDetailsModal().within(() => {
+      cy.get('[data-testid="select:reporter"]').invoke('text')
+        .should('match', /^[A-Za-z ]*$/);
+    });
+  });
+
+      // task #4, workshop #17 Array.length + Array.push()
+  
+    const numberOfPriorities = 5;
+
+  it(`Check, that priority fields has ${numberOfPriorities} values`, () => {
+    let priorities = [];
+
+      // add already chosen priority to the list
+    cy.get('[data-testid="select:priority"]').invoke('text').then((extractedPriority) => {
+      priorities.push(extractedPriority);
+    })
+
+      // click to open priority dropdown - options
+    cy.get('[data-testid="select:priority"]').click();
+
+      // get number of options from the page
+    cy.get('[data-select-option-value]').then(($options) => {
+      const itemCount = Cypress.$($options).length;
+
+      // iterate through the options and
+      // add text from each option to the list
+    for (let index = 0; index < itemCount; index++) {
+        cy.get('[data-select-option-value]')
+          .eq(index).invoke('text').then((extractedPriority) => {
+            priorities.push(extractedPriority);
+
+            if (index == (itemCount - 1)) {
+              cy.log("TOTAL calculated array length: " + priorities.length);
+              expect(priorities.length).to.be.eq(numberOfPriorities);
+            }
+          });
+      };
+    });
+  });
+
+      // Examples, shown on the workshop. We needed to test saving all possible priorities one by one.
+      // For both 1 set of test data is used:
+const priorities = ["Lowest", "Low", "Medium", "High", "Highest"];
+      
+    // Use for loop inside of one the test, that tries to save all the possible values to priority:
+  it(`We are checking saving all possible priorities`, () => {
+    for (let priority1 of priorities) {
+      IssueDetailPage.getIssueDetailModal().within(() => {
+        IssueDetailPage.updateIssuePriorityTo(priority1);
+      });
+    }
+  });
+
+      // Use loop to create several tests, each one separately checking saving different value (here the test for saving value “High” will probably fail, 
+      // because it is already chosen, when we open the page. Therefore there will be no such element [data-testid="select-option:High"]. 
+      // To solve this we might need to update our step for updating issue priority: add there if condition, that if given priority is already chosen, then skip updating step.
+  for(let priority1 of priorities){
+    it(`We are checking saving priority ${priority1}`, () => {
+      IssueDetailPage.getIssueDetailModal().within(() => {
+        IssueDetailPage.updateIssuePriorityTo(priority1);
+      });
+    });
+  }
 });
